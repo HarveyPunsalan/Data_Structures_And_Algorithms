@@ -9,10 +9,8 @@ import java.util.List;
 
 class CSVReader {
 
-    // Private constructor - nobody can instantiate this
     private CSVReader() {}
 
-    // No parameter needed since we only read one specific file
     static List<String[]> readCSV() {
         List<String[]> data = new ArrayList<>();
 
@@ -36,7 +34,6 @@ class CSVReader {
             }
 
         } catch (IOException e) {
-            // More robust error handling instead of printStackTrace()
             System.err.println("Error reading CSV file: " + e.getMessage());
             return data;
         }

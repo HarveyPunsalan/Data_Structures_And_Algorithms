@@ -4,64 +4,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockFromCSV {
+    private String entryDate;
+    private String status;
     private String brand;
-    private String model;
-    private double price;
-    // Add more fields as needed
+    private String engineNumber;
+    private String purchaseStatus;
 
-    // Constructor
-    public StockFromCSV(String brand, String model, double price) {
+    public StockFromCSV(String entryDate, String status, String brand,
+                      String engineNumber, String purchaseStatus) {
+        this.entryDate = entryDate;
+        this.status = status;
         this.brand = brand;
-        this.model = model;
-        this.price = price;
+        this.engineNumber = engineNumber;
+        this.purchaseStatus = purchaseStatus;
     }
 
-    // Getters and Setters
+    public String getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(String entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getBrand() {
         return brand;
-
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
-    public String getModel() {
-        return model;
+    public String getEngineNumber() {
+        return engineNumber;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
     }
 
-    public double getPrice() {
-        return price;
+    public String getPurchaseStatus() {
+        return purchaseStatus;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPurchaseStatus(String purchaseStatus) {
+        this.purchaseStatus = purchaseStatus;
     }
 
-    // Static method to load all motorcycles from CSV
     public static List<StockFromCSV> loadFromCSV() {
         List<StockFromCSV> motorcycles = new ArrayList<>();
-        List<String[]> csvData = CSVReader.readCSV();  // ← No parameter needed now!
+        List<String[]> csvData = CSVReader.readCSV();
 
         for (String[] row : csvData) {
-            // Make sure row has enough columns to avoid ArrayIndexOutOfBoundsException
-            if (row.length >= 3) {
-                String brand = row[0].trim();
-                String model = row[1].trim();
-                double price = Double.parseDouble(row[2].trim());
-
-                motorcycles.add(new StockFromCSV(brand, model, price));
+            if (row.length >= 5) {
+                motorcycles.add(new StockFromCSV(
+                        row[0].trim(),
+                        row[1].trim(),
+                        row[2].trim(),
+                        row[3].trim(),
+                        row[4].trim()
+                ));
             }
         }
 
         return motorcycles;
-    }
-
-    @Override
-    public String toString() {
-        return "Motorcycle{brand='" + brand + "', model='" + model + "', price=" + price + "}";
     }
 }
