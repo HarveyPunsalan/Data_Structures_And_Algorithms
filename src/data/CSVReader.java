@@ -15,7 +15,7 @@ class CSVReader {
         List<String[]> data = new ArrayList<>();
 
         try (InputStream inputStream = CSVReader.class.getClassLoader()
-                .getResourceAsStream("march_2023_inventory.csv")) {
+                .getResourceAsStream("march_2023_inventory.csv.csv")) {
 
             if (inputStream == null) {
                 System.err.println("Error: CSV file 'march_2023_inventory.csv' not found in resources folder!");
