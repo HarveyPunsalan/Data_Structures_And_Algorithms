@@ -80,10 +80,10 @@ public class Main {
         String entryDate = scanner.nextLine();
 
         System.out.print("Stock Label (Old/New): ");
-        String status = scanner.nextLine();  // Make sure this line exists
+        String status = scanner.nextLine();
 
         System.out.print("Brand (Honda/Yamaha/Kawasaki/Suzuki/Kymco): ");
-        String brand = scanner.nextLine();   // And this one too
+        String brand = scanner.nextLine();
 
         System.out.print("Engine Number: ");
         String engineNumber = scanner.nextLine();
