@@ -63,11 +63,6 @@ Tested with 49 motorcycles:
 - Sort: ~1-3ms
 - Search: ~0.5ms
 
-## Known issues
-
-- Doesn't save changes back to CSV
-- No input validation
-
 ## Requirements met
 
 - ✅ Add stocks
