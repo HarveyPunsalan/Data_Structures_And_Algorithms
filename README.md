@@ -11,7 +11,7 @@ Basic inventory management for MotorPH motorcycle shop. Made for DSA Milestone 1
 
 Loads 49 motorcycles from CSV when it starts. Everything runs in terminal.
 
-## Tech used
+## DSA Implementation
 
 **LinkedList** - main storage. Easy to add/remove without worrying about size.
 
