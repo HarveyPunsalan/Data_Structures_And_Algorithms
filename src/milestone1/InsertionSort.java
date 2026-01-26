@@ -6,6 +6,35 @@ import data.StockFromCSV;
 // Works like sorting playing cards - pick one card at a time and put it in the right spot
 public class InsertionSort {
 
+    /**
+     * Sort array of motorcycles by brand
+     * Takes an array and sorts it in place
+     *
+     * Algorithm:
+     * 1. start from index 1 (assume first element is sorted)
+     *
+     * 2. for each position i from 1 to array.length - 1:
+     *
+     *    a. save current motorcycle:
+     *       key = array[i]
+     *
+     *    b. initialize comparison index:
+     *       j = i - 1
+     *
+     *    c. find correct position for key:
+     *       while j >= 0 and array[j].getBrand() > key.getBrand():
+     *
+     *           shift element to the right:
+     *           array[j + 1] = array[j]
+     *
+     *           move to previous element:
+     *           j = j - 1
+     *
+     *    d. insert key in correct position:
+     *       array[j + 1] = key
+     *
+     * 3. array is now sorted alphabetically
+     */
     // sorts array alphabetically by brand name
     public static void sort(StockFromCSV[] array) {
         // start from index 1 because first item is already "sorted" by itself
