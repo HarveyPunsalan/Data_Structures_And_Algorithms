@@ -7,16 +7,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // This will load initial inventory from CSV
         System.out.println("Loading inventory from CSV...");
         List<StockFromCSV> initialStock = StockFromCSV.loadFromCSV();
 
-        // To create inventoryManager with loaded data
         InventoryManager manager = new InventoryManager(initialStock);
         System.out.println("Loaded " + manager.getInventorySize() + " motorcycles from CSV.");
         System.out.println("========================================\n");
 
-        // Main menu loop
         boolean running = true;
         while (running) {
             displayMenu();
@@ -25,9 +22,9 @@ public class Main {
             int choice;
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // To consume newline
+                scanner.nextLine();
             } catch (Exception e) {
-                scanner.nextLine(); // To clear invalid input
+                scanner.nextLine();
                 System.out.println("Invalid input! Please enter a number.\n");
                 continue;
             }
@@ -117,7 +114,6 @@ public class Main {
         manager.sortByBrand();
         System.out.println("Inventory sorted by brand!\n");
 
-        // Display sorted inventory
         displayAll(manager);
     }
 
