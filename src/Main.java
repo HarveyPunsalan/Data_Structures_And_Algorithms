@@ -1,5 +1,5 @@
 import data.StockFromCSV;
-import milestone1.InventoryManager;
+import milestone2.InventoryManager;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,6 +10,7 @@ public class Main {
         System.out.println("Loading inventory from CSV...");
         List<StockFromCSV> initialStock = StockFromCSV.loadFromCSV();
 
+   
         InventoryManager manager = new InventoryManager(initialStock);
         System.out.println("Loaded " + manager.getInventorySize() + " motorcycles from CSV.");
         System.out.println("========================================\n");

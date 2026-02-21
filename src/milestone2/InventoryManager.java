@@ -1,53 +1,54 @@
-package milestone1;
+package milestone2;
 
 import data.StockFromCSV;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // Inventory manager to handle motorcycle inventory using LinkedList
 public class InventoryManager {
     /**
-     * Constructor to initialize inventory with data from CSV
-     * Takes a list of motorcycles and loads them into LinkedList
+     * Constructor to initialize inventory
      *
-     * 1. create new LinkedList for inventory
-     * 2. if initialData is not null:
-     *    loop through each motorcycle in initialData
-     *    add motorcycle to inventory LinkedList
+     * 1. Initializes LinkedList to store motorcycles
+     * 2. Initializes HashMap to index motorcycles by engine number
+     * 3. Loops through initialStock:
+     *      - Adds each motorcycle to LinkedList
+     *      - Adds each motorcycle to HashMap for fast search/delete
      */
     private LinkedList<StockFromCSV> inventory;
+    // HashMap provides fast search and deletion by engine number (O(1))
+    private HashMap<String, StockFromCSV> engineIndex;
 
     public InventoryManager(List<StockFromCSV> initialStock) {
         inventory = new LinkedList<>();
+        engineIndex = new HashMap<>();
         for (StockFromCSV stock : initialStock) {
             inventory.add(stock);
+            engineIndex.put(stock.getEngineNumber(), stock);
         }
     }
 
     /**
-     * Add new motorcycle to inventory
-     * Takes a motorcycle object and adds it to the end of LinkedList
-     * Returns true if successful, false if failed
+     * Adds a new motorcycle to the inventory.
      *
-     * Algorithm:
-     * 1. validate input:
-     *    if motorcycle is null:
-     *        print error message
-     *        return false
+     * Steps:
+     * 1. Append newStock to the LinkedList (used for display and sorting)
+     * 2. Add newStock to engineIndex HashMap using engineNumber as the key
+     *    (enables constant-time search and deletion by engine number)
+     * 3. Prints the time taken for the add operation
      *
-     * 2. add to LinkedList:
-     *    inventory.addLast(motorcycle)
-     *
-     * 3. print success message
-     *
-     * 4. return true
+     * Note: The method no longer returns a boolean. All motorcycles are
+     * tracked in both the LinkedList and HashMap to maintain performance
+     * and data consistency.
      */
     // Add new stock to inventory
     public void addStock(StockFromCSV newStock) {
         long start = System.nanoTime();
 
         inventory.addLast(newStock);
+        engineIndex.put(newStock.getEngineNumber(), newStock);
 
         long end = System.nanoTime();
         double time = (end - start) / 1_000_000.0;
@@ -55,34 +56,26 @@ public class InventoryManager {
         System.out.printf("Add operation completed in %.4f milliseconds\n", time);
     }
 
-
     /**
-     * Delete motorcycle from inventory by engine number
-     * Searches through LinkedList and removes matching motorcycle
-     * Returns true if deleted, false if not found
+     * Deletes a motorcycle from inventory by engine number
      *
-     * Algorithm:
-     * 1. check if inventory is empty:
-     *    if inventory.isEmpty():
-     *        print "inventory is empty"
-     *        return false
+     * Steps:
+     * 1. Look up motorcycle in engineIndex HashMap by engine number (O(1))
+     * 2. If found:
+     *      - Remove from LinkedList
+     *      - Remove from HashMap
+     *      - Return true
+     * 3. If not found, return false
+     * 4. Prints operation time
      *
-     * 2. search through LinkedList:
-     *    for each motorcycle in inventory:
-     *        if motorcycle.getEngineNumber() equals engineNumber:
-     *            inventory.remove(motorcycle)
-     *            print success message
-     *            return true
-     *
-     * 3. if loop completes without finding:
-     *    print "motorcycle not found"
-     *    return false
+     * Note: Using HashMap allows deletion in constant time,
+     * which is a major improvement over linear search.
      */
     // Delete stock by car engine number
     public boolean deleteStock(String engineNumber) {
         long start = System.nanoTime();
 
-        StockFromCSV toDelete = LinearSearch.searchByEngineNumber(inventory, engineNumber);
+        StockFromCSV toDelete = engineIndex.get(engineNumber);
         boolean deleted = false;
 
         if (toDelete != null) {
@@ -100,40 +93,18 @@ public class InventoryManager {
 
 
     /**
-     * Sort inventory alphabetically by brand
-     * Converts LinkedList to Array, sorts it, then converts back
+     * Sorts the inventory alphabetically by brand.
      *
-     * Algorithm:
-     * 1. check if inventory is empty:
-     *    if inventory.isEmpty():
-     *        print message and return
+     * Steps:
+     * 1. Convert LinkedList to array for easier indexing
+     * 2. Sort the array using Merge Sort (O(n log n), stable)
+     *    - Uses recursion to divide array
+     *    - Merges sorted subarrays
+     * 3. Convert sorted array back to LinkedList
+     * 4. Prints operation time
      *
-     * 2. convert LinkedList to Array:
-     *    get size of inventory
-     *    create Motorcycle[] array of that size
-     *    copy all motorcycles from LinkedList to array
-     *
-     * 3. insertion sort on array:
-     *    for i = 1 to array.length - 1:
-     *
-     *        store current element:
-     *        key = array[i]
-     *        j = i - 1
-     *
-     *        shift elements greater than key to the right:
-     *        while j >= 0 and array[j].getBrand() > key.getBrand():
-     *            array[j + 1] = array[j]
-     *            j = j - 1
-     *
-     *        insert key at correct position:
-     *        array[j + 1] = key
-     *
-     * 4. convert sorted array back to LinkedList:
-     *    clear inventory LinkedList
-     *    for each motorcycle in sorted array:
-     *        add motorcycle to inventory
-     *
-     * 5. print success message
+     * Note: Merge Sort improves performance over Insertion Sort,
+     * especially for large inventories.
      */
     // Sort inventory by brand alphabetically
     // I need to convert to array first since LinkedList doesn't support direct sorting
@@ -148,7 +119,7 @@ public class InventoryManager {
         }
 
         // sort the array
-        InsertionSort.sort(array);
+        MergeSort.sort(array);
 
         // put sorted items back to linkedlist
         inventory.clear();
@@ -218,8 +189,17 @@ public class InventoryManager {
                     match = stock.getBrand().equalsIgnoreCase(value);
                     break;
                 case "enginenumber":
-                    match = stock.getEngineNumber().equalsIgnoreCase(value);
-                    break;
+                    // Look up motorcycle directly in HashMap (O(1))
+                    StockFromCSV found = engineIndex.get(value);
+                    if (found != null) {
+                        results.add(found);
+                    }
+                    // Return early since HashMap gives exact match
+                    long end = System.nanoTime();
+                    double time = (end - start) / 1_000_000.0;
+                    System.out.printf("Search operation completed in %.4f milliseconds (Found %d result(s))\n",
+                            time, results.size());
+                    return results;
                 case "purchasestatus":
                     match = stock.getPurchaseStatus().equalsIgnoreCase(value);
                     break;

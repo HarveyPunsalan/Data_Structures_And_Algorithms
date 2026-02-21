@@ -28,7 +28,7 @@ src/
 ├── data/
 │   ├── StockFromCSV.java       - motorcycle data model
 │   └── CSVReader.java          - reads CSV file
-└── milestone1/
+└── milestone2/
     ├── InventoryManager.java   - main logic (uses LinkedList)
     ├── InsertionSort.java      - sorting algorithm
     └── LinearSearch.java       - search algorithm
