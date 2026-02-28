@@ -11,7 +11,7 @@ public class StockFromCSV {
     private String purchaseStatus;
 
     public StockFromCSV(String entryDate, String status, String brand,
-                      String engineNumber, String purchaseStatus) {
+                        String engineNumber, String purchaseStatus) {
         this.entryDate = entryDate;
         this.status = status;
         this.brand = brand;
@@ -59,6 +59,7 @@ public class StockFromCSV {
         this.purchaseStatus = purchaseStatus;
     }
 
+    //Using CSV as Data Remove this if InventoryData.java is prefered
     public static List<StockFromCSV> loadFromCSV() {
         List<StockFromCSV> motorcycles = new ArrayList<>();
         List<String[]> csvData = CSVReader.readCSV();
@@ -77,6 +78,14 @@ public class StockFromCSV {
 
         return motorcycles;
     }
+
+
+    // This is the code for Inventory Data Class. Used for if the data is from InventoryData.Java instead of CSV file
+    //@Override
+    //public String toString() {
+        //return entryDate + " | " + status + " | " +
+                //brand + " | " + engineNumber + " | " + purchaseStatus;
+    //}
 }
 /**
  * StockFromCSV - represents one motorcycle in inventory

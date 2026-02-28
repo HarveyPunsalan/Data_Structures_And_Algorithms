@@ -7,9 +7,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        //Delete this when InventoryData.java is prefered rather than CSVReader
         System.out.println("Loading inventory from CSV...");
         List<StockFromCSV> initialStock = StockFromCSV.loadFromCSV();
 
+        //Code to use for when InventoryData.java is used instead of CSVReader
+        //System.out.println("Loading initial inventory data...");
+        //List<Stock> initialStock = InventoryData.loadInitialInventory();
    
         InventoryManager manager = new InventoryManager(initialStock);
         System.out.println("Loaded " + manager.getInventorySize() + " motorcycles from CSV.");
