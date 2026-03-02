@@ -3,22 +3,26 @@ package data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Alternative to CSV loading
+ *
+ */
 public class InventoryData {
 
-    //This is the List of Motorcycles as a Java Class
-
+    /**
+     * Load initial inventory without CSV dependency
+     *
+     * Steps:
+     * 1. Create empty ArrayList
+     * 2. Add StockFromCSV objects with hardcoded data
+     *    - February old stocks
+     *    - March new stocks
+     * 3. Return the list
+     */
     public static List<StockFromCSV> loadInitialInventory() {
-
         List<StockFromCSV> stockList = new ArrayList<>();
 
-        // February Old Stocks
-        stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "142QVTSIUR", "On-hand"));
-        stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "PZCT1S00XE", "Sold"));
-        stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "4VBTV8YNM7", "Sold"));
-        stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "95AN3AWVF4", "On-hand"));
-        stockList.add(new StockFromCSV("2/3/2023", "Old", "Kawasaki", "483QHIM661", "On-hand"));
-        stockList.add(new StockFromCSV("2/3/2023", "Old", "Kymco", "SPHA17SSEE", "On-hand"));
-        stockList.add(new StockFromCSV("2/3/2023", "Old", "Kymco", "0AV7SWGX93", "Sold"));
+        // February old stocks
         stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "142QVTSIUR", "On-hand"));
         stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "PZCT1S00XE", "Sold"));
         stockList.add(new StockFromCSV("2/1/2023", "Old", "Honda", "4VBTV8YNM7", "Sold"));
@@ -49,7 +53,7 @@ public class InventoryData {
         stockList.add(new StockFromCSV("2/8/2023", "Old", "Kymco", "4M793VVAHI", "On-hand"));
         stockList.add(new StockFromCSV("2/8/2023", "Old", "Suzuki", "5N7IQVJ2BA", "On-hand"));
 
-        // March New Stocks
+        // March new stocks
         stockList.add(new StockFromCSV("3/1/2023", "New", "Suzuki", "NO8VW05PU9", "On-hand"));
         stockList.add(new StockFromCSV("3/1/2023", "New", "Yamaha", "NWIP2MQEIN", "Sold"));
         stockList.add(new StockFromCSV("3/1/2023", "New", "Kawasaki", "1HCWCVZSX8", "Sold"));

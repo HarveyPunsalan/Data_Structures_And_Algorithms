@@ -23,43 +23,60 @@ public class StockFromCSV {
         return entryDate;
     }
 
-    public void setEntryDate(String entryDate) {
-        this.entryDate = entryDate;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
     public String getEngineNumber() {
         return engineNumber;
-    }
-
-    public void setEngineNumber(String engineNumber) {
-        this.engineNumber = engineNumber;
     }
 
     public String getPurchaseStatus() {
         return purchaseStatus;
     }
 
+    public void setEntryDate(String entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
+    }
+
     public void setPurchaseStatus(String purchaseStatus) {
         this.purchaseStatus = purchaseStatus;
     }
 
-    //Using CSV as Data Remove this if InventoryData.java is prefered
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s | %s | %s",
+                entryDate, status, brand, engineNumber, purchaseStatus);
+    }
+
+    /**
+     * Load motorcycles from CSV file
+     *
+     * Steps:
+     * 1. Create empty list for motorcycles
+     * 2. Read CSV data using CSVReader
+     * 3. For each row in CSV:
+     *      - Check if row has at least 5 columns
+     *      - Create new StockFromCSV object with trimmed values
+     *      - Add to motorcycles list
+     * 4. Return the list
+     */
     public static List<StockFromCSV> loadFromCSV() {
         List<StockFromCSV> motorcycles = new ArrayList<>();
         List<String[]> csvData = CSVReader.readCSV();
@@ -78,13 +95,11 @@ public class StockFromCSV {
 
         return motorcycles;
     }
-
-
     // This is the code for Inventory Data Class. Used for if the data is from InventoryData.Java instead of CSV file
     //@Override
     //public String toString() {
-        //return entryDate + " | " + status + " | " +
-                //brand + " | " + engineNumber + " | " + purchaseStatus;
+    //return entryDate + " | " + status + " | " +
+    //brand + " | " + engineNumber + " | " + purchaseStatus;
     //}
 }
 /**

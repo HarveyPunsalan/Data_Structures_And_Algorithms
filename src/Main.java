@@ -75,7 +75,10 @@ public class Main {
         System.out.println("========================================");
     }
 
-    private static void addStock(Scanner scanner, InventoryManager manager) {
+    private static void addStock(Scanner scanner, InventoryManager manager)
+    {
+        scanner.nextLine(); // ← I add this to fix the label and brand on the same line
+
         System.out.println("\n--- Add New Stock ---");
 
         System.out.print("Entry Date (M/D/YYYY): ");
@@ -130,8 +133,15 @@ public class Main {
         System.out.println("3. Purchase Status");
         System.out.print("Enter choice: ");
 
-        int searchChoice = scanner.nextInt();
-        scanner.nextLine();
+        String input = scanner.nextLine();
+        int searchChoice;
+
+        try {
+            searchChoice = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!\n");
+            return;
+        }
 
         String field = "";
         String value = "";

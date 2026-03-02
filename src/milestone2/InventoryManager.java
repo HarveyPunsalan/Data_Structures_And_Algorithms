@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// Inventory manager to handle motorcycle inventory using LinkedList
 public class InventoryManager {
+
     /**
-     * Constructor to initialize inventory
+     * Constructor to initialize inventory with data
      *
      * 1. Initializes LinkedList to store motorcycles
      * 2. Initializes HashMap to index motorcycles by engine number
@@ -18,12 +18,12 @@ public class InventoryManager {
      *      - Adds each motorcycle to HashMap for fast search/delete
      */
     private LinkedList<StockFromCSV> inventory;
-    // HashMap provides fast search and deletion by engine number (O(1))
     private HashMap<String, StockFromCSV> engineIndex;
 
     public InventoryManager(List<StockFromCSV> initialStock) {
         inventory = new LinkedList<>();
         engineIndex = new HashMap<>();
+
         for (StockFromCSV stock : initialStock) {
             inventory.add(stock);
             engineIndex.put(stock.getEngineNumber(), stock);
@@ -31,7 +31,7 @@ public class InventoryManager {
     }
 
     /**
-     * Adds a new motorcycle to the inventory.
+     * Adds a new motorcycle to the inventory
      *
      * Steps:
      * 1. Append newStock to the LinkedList (used for display and sorting)
@@ -39,11 +39,9 @@ public class InventoryManager {
      *    (enables constant-time search and deletion by engine number)
      * 3. Prints the time taken for the add operation
      *
-     * Note: The method no longer returns a boolean. All motorcycles are
-     * tracked in both the LinkedList and HashMap to maintain performance
-     * and data consistency.
+     * Note: Both LinkedList and HashMap are updated to maintain
+     * performance and data consistency
      */
-    // Add new stock to inventory
     public void addStock(StockFromCSV newStock) {
         long start = System.nanoTime();
 
@@ -69,9 +67,8 @@ public class InventoryManager {
      * 4. Prints operation time
      *
      * Note: Using HashMap allows deletion in constant time,
-     * which is a major improvement over linear search.
+     * which is a major improvement over linear search
      */
-    // Delete stock by car engine number
     public boolean deleteStock(String engineNumber) {
         long start = System.nanoTime();
 
@@ -80,6 +77,7 @@ public class InventoryManager {
 
         if (toDelete != null) {
             inventory.remove(toDelete);
+            engineIndex.remove(engineNumber);
             deleted = true;
         }
 
@@ -91,9 +89,8 @@ public class InventoryManager {
         return deleted;
     }
 
-
     /**
-     * Sorts the inventory alphabetically by brand.
+     * Sorts the inventory alphabetically by brand
      *
      * Steps:
      * 1. Convert LinkedList to array for easier indexing
@@ -104,10 +101,8 @@ public class InventoryManager {
      * 4. Prints operation time
      *
      * Note: Merge Sort improves performance over Insertion Sort,
-     * especially for large inventories.
+     * especially for large inventories
      */
-    // Sort inventory by brand alphabetically
-    // I need to convert to array first since LinkedList doesn't support direct sorting
     public void sortByBrand() {
         long start = System.nanoTime();
 
@@ -133,54 +128,45 @@ public class InventoryManager {
         System.out.printf("Sort operation completed in %.4f milliseconds\n", time);
     }
 
-
     /**
      * Search for motorcycles by specific criteria
-     * Can search by: brand, engineNumber, status, or stockLabel
-     * Returns list of all matching motorcycles
      *
-     * Algorithm:
-     * 1. create empty ArrayList for results
+     * Steps:
+     * 1. If searching by engine number:
+     *      - Use HashMap for O(1) direct lookup
+     *      - Add to results if found
+     *      - Return results immediately
      *
-     * 2. check if inventory is empty:
-     *    if inventory.isEmpty():
-     *        print message
-     *        return empty list
+     * 2. For other fields (brand, purchase status):
+     *      - Loop through LinkedList
+     *      - Compare each motorcycle's field with search value
+     *      - Add matches to results list
      *
-     * 3. search through LinkedList:
-     *    for each motorcycle in inventory:
+     * 3. Print operation time and number of results found
+     * 4. Return results list
      *
-     *        if searchBy equals "brand":
-     *            if motorcycle.getBrand() equals value:
-     *                add motorcycle to results
-     *
-     *        else if searchBy equals "engineNumber":
-     *            if motorcycle.getEngineNumber() equals value:
-     *                add motorcycle to results
-     *
-     *        else if searchBy equals "status":
-     *            if motorcycle.getStatus() equals value:
-     *                add motorcycle to results
-     *
-     *        else if searchBy equals "stockLabel":
-     *            if motorcycle.getStockLabel() equals value:
-     *                add motorcycle to results
-     *
-     * 4. check results:
-     *    if results is empty:
-     *        print "no matches found"
-     *    else:
-     *        print number of matches found
-     *
-     * 5. return results list
+     * Note: Engine number search is O(1) using HashMap,
+     * while other searches are O(n) using sequential search
      */
-    // Search inventory by field (brand, engine number, or status)
     public List<StockFromCSV> search(String field, String value) {
         long start = System.nanoTime();
-
         List<StockFromCSV> results = new ArrayList<>();
 
-        // check each item in inventory
+        // if searching by engine number, use HashMap
+        if (field.equalsIgnoreCase("engineNumber")) {
+            StockFromCSV found = engineIndex.get(value);
+            if (found != null) {
+                results.add(found);
+            }
+
+            long end = System.nanoTime();
+            double time = (end - start) / 1_000_000.0;
+            System.out.printf("Search operation completed in %.4f milliseconds (Found %d result(s))\n",
+                    time, results.size());
+            return results;
+        }
+
+        // for other fields, search through LinkedList
         for (StockFromCSV stock : inventory) {
             boolean match = false;
 
@@ -188,18 +174,6 @@ public class InventoryManager {
                 case "brand":
                     match = stock.getBrand().equalsIgnoreCase(value);
                     break;
-                case "enginenumber":
-                    // Look up motorcycle directly in HashMap (O(1))
-                    StockFromCSV found = engineIndex.get(value);
-                    if (found != null) {
-                        results.add(found);
-                    }
-                    // Return early since HashMap gives exact match
-                    long end = System.nanoTime();
-                    double time = (end - start) / 1_000_000.0;
-                    System.out.printf("Search operation completed in %.4f milliseconds (Found %d result(s))\n",
-                            time, results.size());
-                    return results;
                 case "purchasestatus":
                     match = stock.getPurchaseStatus().equalsIgnoreCase(value);
                     break;
